@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!--标题栏 线条颜色-->
+    <color name="tittle_line">#EDEDED</color>
+    <!--标题栏渐变颜色-->
+    <color name="tittle_start">#FF8346FD</color>
+    <color name="tittle_end">#FF9C47FC</color>
+
+    <!--20表示20%不透明度,换算成十六进制为33-->
+    <color name="white_10">#1affffff</color>
+    <color name="white_20">#33ffffff</color>
+    <color name="white_30">#6e737c</color>
+    <color name="white_40">#66ffffff</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="white_60">#99ffffff</color>
+    <color name="white_80">#ccffffff</color>
+    <color name="white_90">#e6ffffff</color>
+    <color name="white_dd">#ffdddddd</color>
+    <color name="black_10">#1a000000</color>
+    <color name="black_15">#26000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="black_30">#4d000000</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_70">#b4000000</color>
+    <color name="black_80">#cc000000</color>
+    <color name="black_88">#e1000000</color>
+    <color name="black_90">#e5000000</color>
+
+
+    <color name="transparent">#00000000</color>
+    <color name="title_color">#00aeff</color>
+
+    <color name="black">#000000</color>
+    <color name="shadow_black">#77000000</color>
+    <color name="white">#ffffff</color>
+    <color name="title_right_text">#292929</color>
+    <color name="rise_number_text_color_red">#FF0000</color>
+    <color name="gray_40">#e5151515</color>
+    <color name="gift_price">#ffa200</color>
+
+    <color name="backGround_F7F7F7">#F7F7F7</color>
+    <color name="have_line">#E6E6E6</color>
+    <color name="text_F2F2F2">#F2F2F2</color>
+    <color name="text_333333">#333333</color>
+    <color name="text_000000">#000000</color>
+    <color name="text_666666">#666666</color>
+    <color name="text_999999">#999999</color>
+    <color name="text_121212">#121212</color>
+    <color name="text_4D4D4D">#4D4D4D</color>
+    <color name="text_66000000">#66000000</color>
+    <color name="color_DDDDDD">#DDDDDD</color>
+    <color name="room_head_bg">#26ffffff</color>
+
+    <color name="color_282828">#282828</color>
+    <color name="color_292929">#292929</color>
+
+    <color name="color_FFD829">#FFD829</color>
+    <color name="color_FFD110">#FFD110</color>
+
+    <color name="seekbarPrimary">#607D8B</color>
+    <color name="seekbarAccent">#FF9800</color>
+
+    <color name="pickerview_timebtn_nor">#057dff</color>
+    <color name="pickerview_timebtn_pre">#c2daf5</color>
+    <color name="pickerview_topbar_title">#000000</color>
+    <color name="pickerview_bg_topbar">#f5f5f5</color>
+    <color name="pickerview_bgColor_overlay">#60000000</color>
+
+    <color name="switch_view_open_color"> #52A0F2 </color>
+</resources>
