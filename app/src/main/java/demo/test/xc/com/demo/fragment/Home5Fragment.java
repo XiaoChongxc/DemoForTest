@@ -3,17 +3,21 @@ package demo.test.xc.com.demo.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewStub;
+import android.widget.LinearLayout;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import demo.test.xc.com.demo.R;
+import demo.test.xc.com.demo.activity.TestActivity;
 
-public class HomeFragment extends LazyFragment {
+public class Home5Fragment extends LazyFragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
 
-    public static HomeFragment getInstance(String title, @ColorRes int backgroundColor) {
-        HomeFragment homeFragment = new HomeFragment();
+    public static Home5Fragment getInstance(String title, @ColorRes int backgroundColor) {
+        Home5Fragment homeFragment = new Home5Fragment();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putInt("backgroundColor", backgroundColor);
@@ -23,6 +27,9 @@ public class HomeFragment extends LazyFragment {
 
     String curName = "";
     int bgColor = 0;
+    ViewStub  viewStub;
+
+    LinearLayout layoutHome5;
 
     boolean  isViewCreate=false;
 
@@ -36,10 +43,17 @@ public class HomeFragment extends LazyFragment {
 
     public int getLayoutRes() {
         Log.d(TAG, curName + "==>onCreateView: ");
-        return R.layout.fragment_layout_loading;
+        return R.layout.fragment_home_layout;
     }
 
     protected void initView() {
+            rootView.findViewById(R.id.tv_next).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TestActivity.Companion.startThis(getContext());
+                }
+            });
+
 
     }
 
@@ -88,6 +102,10 @@ public class HomeFragment extends LazyFragment {
     @Override
     protected void fragmentfirstVisible() {
         Log.d(TAG, curName+"fragmentfirstVisible: ===========>第一次可见，应当去更新ui布局");
+        viewStub=rootView.findViewById(R.id.main_view_stub);
+        layoutHome5 = (LinearLayout) viewStub.inflate();
+
+
     }
 
     protected void startLoadData() {

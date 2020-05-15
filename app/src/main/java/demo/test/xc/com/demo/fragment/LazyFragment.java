@@ -2,13 +2,14 @@ package demo.test.xc.com.demo.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 
 /**
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
  *  然后我们需要严格控制在  只有是  可见====》不可见的时候 ， 去停止加载数据， 在 不可见====》可见的时候， 去加载数据 ，避免多次触发
  * @see #fragmentfirstVisible()  第一次fragment可见时触发
  * @see #dispatchUserVisible(boolean)   fragment 可见状态发生变化的时候触发
+ * 会先执行  fragmentfirstVisible  在执行initView  ，
  */
 public abstract class LazyFragment extends Fragment {
     boolean isViewCreate = false;
@@ -70,8 +72,7 @@ public abstract class LazyFragment extends Fragment {
 
     protected abstract void initView();
 
-    public abstract @LayoutRes
-    int getLayoutRes();
+    public abstract @LayoutRes    int getLayoutRes();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
