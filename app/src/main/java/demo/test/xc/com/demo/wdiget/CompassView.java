@@ -18,6 +18,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -105,7 +106,7 @@ public class CompassView extends View {
         }
     };
 
-private   boolean hasText=false;
+    private boolean hasText = false;
     private boolean hasPoint = false;
 
     private void init(Context context) {
@@ -149,30 +150,6 @@ private   boolean hasText=false;
                 invalidate();
             }
         });
-
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                //結束之後開始畫文字
-                hasText=true;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-
         ValueAnimator animator2 = ValueAnimator.ofFloat(0, 1);
         animator2.setDuration(2000);
 //        animator2.start();
@@ -208,11 +185,11 @@ private   boolean hasText=false;
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //动画结束， 开始画指针
-                if (!hasPoint) {
-                    hasPoint = true;
-                    invalidate();
-                    animatorSet2.start();
+                //开始话文字
+                if(!hasText){
+                    hasText=true;
+                    initAnimatorSet();
+                    set.start();
                 }
             }
 
@@ -227,7 +204,9 @@ private   boolean hasText=false;
             }
         });
 
-         ValueAnimator animator3 = ValueAnimator.ofFloat(0, 1);
+
+
+        ValueAnimator animator3 = ValueAnimator.ofFloat(0, 1);
         animator3.setDuration(2000);
         animator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -246,10 +225,10 @@ private   boolean hasText=false;
                 invalidate();
             }
         });
-        animatorSet2.play(animator4 ).before(animator3);
+        animatorSet2.play(animator4).before(animator3);
     }
 
-    AnimatorSet  animatorSet2=new AnimatorSet();
+    AnimatorSet animatorSet2 = new AnimatorSet();
 
     PathMeasure pathMeasure;
     private float animatoinX = 0;
@@ -275,7 +254,7 @@ private   boolean hasText=false;
         super.onDraw(canvas);
         drawScale(canvas);
 
-        if(hasPoint){
+        if (hasPoint) {
             drawPointer(canvas);
         }
     }
@@ -301,36 +280,40 @@ private   boolean hasText=false;
 
         //画 NSEW
 //        2种方式，  1 直接drawText   2旋转画布
-        if(hasText) {
-            float x1 = cX - mTextPaint.measureText("N", 0, 1) / 2;
-            float x2 = cX - mTextPaint.measureText("E", 0, 1) / 2;
-            float x3 = cX - mTextPaint.measureText("S", 0, 1) / 2;
-            float x4 = cX - mTextPaint.measureText("W", 0, 1) / 2;
+        if (hasText) {
+//            float x1 = cX - mTextPaint.measureText("N", 0, 1) / 2;
+//            float x2 = cX - mTextPaint.measureText("E", 0, 1) / 2;
+//            float x3 = cX - mTextPaint.measureText("S", 0, 1) / 2;
+//            float x4 = cX - mTextPaint.measureText("W", 0, 1) / 2;
+//
+//            canvas.drawText("N", x1, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+//            canvas.rotate(90, cX, cY);
+//            canvas.drawText("E", x2, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+//            canvas.rotate(90, cX, cY);
+//            canvas.drawText("S", x3, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+//            canvas.rotate(90, cX, cY);
+//            canvas.drawText("W", x4, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+//            canvas.rotate(90, cX, cY);
 
-            canvas.drawText("N", x1, cY - mRadius + mTextSize + mBorderWidth +20, mTextPaint);
-            canvas.rotate(90, cX, cY);
-            canvas.drawText("E", x2, cY - mRadius + mTextSize + mBorderWidth+20, mTextPaint);
-            canvas.rotate(90, cX, cY);
-            canvas.drawText("S", x3, cY - mRadius + mTextSize + mBorderWidth+20, mTextPaint);
-            canvas.rotate(90, cX, cY);
-            canvas.drawText("W", x4, cY - mRadius + mTextSize + mBorderWidth+20, mTextPaint);
-            canvas.rotate(90, cX, cY);
+
+            drawScaleText(canvas);
+
         }
 
 
         //画  刻度
-        Path shape=new Path();
+        Path shape = new Path();
 //        shape.addCircle(0,0,5, Path.Direction.CCW);
-        shape.addRect(0,0,8,12, Path.Direction.CCW);
+        shape.addRect(0, 0, 8, 12, Path.Direction.CCW);
         //计算   把圆周分成 24等分
-        float  advance = (float) (2*Math.PI *(mRadius-40) /24);
-        PathDashPathEffect pathDashPathEffect =new PathDashPathEffect(shape,advance,0, PathDashPathEffect.Style.MORPH);
+        float advance = (float) (2 * Math.PI * (mRadius - 40) / 24);
+        PathDashPathEffect pathDashPathEffect = new PathDashPathEffect(shape, advance, 0, PathDashPathEffect.Style.MORPH);
         mScalePaint.setPathEffect(pathDashPathEffect);
 
 //                DashPathEffect pathDashPathEffect =new DashPathEffect(new float[]{10,10},1);
 //        mScalePaint.setPathEffect(pathDashPathEffect);
 //        canvas.drawPath(shape,mScalePaint);
-        canvas.drawArc(new RectF(cX-mRadius+40,cY-mRadius+40,cX+mRadius-40,cY+mRadius-40),0,360f*animatoinX5,false,mScalePaint);
+        canvas.drawArc(new RectF(cX - mRadius + 40, cY - mRadius + 40, cX + mRadius - 40, cY + mRadius - 40), 0, 360f * animatoinX5, false, mScalePaint);
 //        canvas.draw(cX,cY,mRadius-40,mScalePaint);
 
 
@@ -368,7 +351,8 @@ private   boolean hasText=false;
         pathMeasure.getSegment(startD, stopD, dstPath, true);
         canvas.drawPath(dstPath, mPaint);
     }
-    private void drawAPath2(Path path, Canvas canvas,float  animatoinX,Paint mPaint) {
+
+    private void drawAPath2(Path path, Canvas canvas, float animatoinX, Paint mPaint) {
         Path dstPath = new Path();
         path.moveTo(0, 0);
         pathMeasure = new PathMeasure(path, false);
@@ -382,13 +366,13 @@ private   boolean hasText=false;
 
     //画指针
     private void drawPointer(Canvas canvas) {
-        canvas.rotate(offsetDegrees *animatoinX4, cX, cY);
+        canvas.rotate(offsetDegrees * animatoinX4, cX, cY);
         if (pointPath == null)
             pointPath = getPath(2 / 3f, 40);
         mPaint2.setShader(new LinearGradient(0, cY - mRadius * 2 / 3f, 0, cY + mRadius * 2 / 3f, new int[]{Color.BLUE, Color.RED}, new float[]{0.5f, 0.4999999f}, Shader.TileMode.CLAMP));
-        drawAPath2(pointPath,canvas,animatoinX3,mPaint2);
+        drawAPath2(pointPath, canvas, animatoinX3, mPaint2);
 //        canvas.drawPath(pointPath, mPaint2);
-        canvas.rotate(-offsetDegrees*animatoinX4, cX, cY);
+        canvas.rotate(-offsetDegrees * animatoinX4, cX, cY);
     }
 
     private Path getPath(float scale, float point_width) {
@@ -401,6 +385,111 @@ private   boolean hasText=false;
         path1.quadTo(cX, cY + mRadius * scale, cX + point_width, cY);
         path1.quadTo(cX + point_width, cY, cX, cY - mRadius * scale);
         return path1;
+    }
+
+
+    float mTextx1 = 0;
+    float mTextx2 = 0;
+    float mTextx3 = 0;
+    float mTextx4 = 0;
+    AnimatorSet  set;
+
+    private AnimatorSet  initAnimatorSet(){
+        if(set==null) {
+            Log.d(TAG, "drawScaleText: ========初始化set");
+            set = new AnimatorSet();
+            ValueAnimator animator = ValueAnimator.ofFloat(0, 1f, 0.8f);
+            animator.setDuration(1000);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mTextx1 = (float) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+
+            ValueAnimator animator2 = ValueAnimator.ofFloat(0, 1.2f, 0.8f);
+            animator2.setDuration(1000);
+            animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mTextx2 = (float) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            ValueAnimator animator3 = ValueAnimator.ofFloat(0, 1.2f, 0.8f);
+            animator3.setDuration(1000);
+            animator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mTextx3 = (float) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            ValueAnimator animator4 = ValueAnimator.ofFloat(0, 1.2f, 0.8f);
+            animator4.setDuration(1000);
+            animator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mTextx4 = (float) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            set.playSequentially(animator, animator2, animator3, animator4);
+            set.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    //动画结束， 开始画指针
+                    if (!hasPoint) {
+                        hasPoint = true;
+                        invalidate();
+                        animatorSet2.start();
+                    }
+                }
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+//            set.play(animator);
+//            set.start();
+        }
+        return  set;
+    }
+
+    private void drawScaleText(Canvas canvas) {
+        //画刻度的文字，  nesw
+        mTextPaint.setTextSize(mTextSize * mTextx1);
+        float x4 = cX - mTextPaint.measureText("N", 0, 1) / 2;
+        canvas.drawText("N", x4, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+        canvas.rotate(90, cX, cY);
+
+        mTextPaint.setTextSize(mTextSize * mTextx2);
+        float x3 = cX - mTextPaint.measureText("E", 0, 1) / 2;
+        canvas.drawText("E", x3, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+        canvas.rotate(90, cX, cY);
+
+        mTextPaint.setTextSize(mTextSize * mTextx3);
+        float x2 = cX - mTextPaint.measureText("S", 0, 1) / 2;
+        canvas.drawText("S", x2, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+        canvas.rotate(90, cX, cY);
+
+        mTextPaint.setTextSize(mTextSize * mTextx4);
+        float x1 = cX - mTextPaint.measureText("W", 0, 1) / 2;
+        canvas.drawText("W", x1, cY - mRadius + mTextSize + mBorderWidth + 20, mTextPaint);
+
+        canvas.rotate(90, cX, cY);
+
     }
 
     @Override
