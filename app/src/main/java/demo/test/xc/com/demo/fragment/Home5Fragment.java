@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import demo.test.xc.com.demo.R;
 import demo.test.xc.com.demo.activity.TestActivity;
+import demo.test.xc.com.demo.wdiget.CompassView;
 
 public class Home5Fragment extends LazyFragment {
 
@@ -105,7 +107,15 @@ public class Home5Fragment extends LazyFragment {
         viewStub=rootView.findViewById(R.id.main_view_stub);
         layoutHome5 = (LinearLayout) viewStub.inflate();
 
+        final CompassView compassView =rootView.findViewById(R.id.compassView);
 
+        Button btn=layoutHome5.findViewById(R.id.btn_restart);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compassView.reStart();
+            }
+        });
     }
 
     protected void startLoadData() {

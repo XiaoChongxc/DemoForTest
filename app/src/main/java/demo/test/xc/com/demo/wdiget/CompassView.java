@@ -109,6 +109,8 @@ public class CompassView extends View {
     private boolean hasText = false;
     private boolean hasPoint = false;
 
+    private boolean  isAnimationComplete=false;
+    AnimatorSet animatorSet = new AnimatorSet();
     private void init(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
@@ -171,7 +173,7 @@ public class CompassView extends View {
             }
         });
 
-        AnimatorSet animatorSet = new AnimatorSet();
+          animatorSet = new AnimatorSet();
 //        animatorSet.playSequentially(animator,animator2,animator5);
 ////        animatorSet.play(animator2);
 ////        animatorSet.play(animator5);
@@ -226,6 +228,27 @@ public class CompassView extends View {
             }
         });
         animatorSet2.play(animator4).before(animator3);
+        animatorSet2.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isAnimationComplete=true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 
     AnimatorSet animatorSet2 = new AnimatorSet();
@@ -496,4 +519,33 @@ public class CompassView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         return true;
     }
+
+    public  void  reStart(){
+        if(!isAnimationComplete)return ;
+
+        //动画重新播放
+        isAnimationComplete=false;
+        animatoinX=0;
+        animatoinX2=0;
+        animatoinX3=0;
+        animatoinX4=0;
+        animatoinX5=0;
+
+        mTextx1=0;
+        mTextx2=0;
+        mTextx3=0;
+        mTextx4=0;
+
+
+        hasText=false;
+
+        hasPoint=false;
+        offsetDegrees=0;
+        set=null;
+
+        animatorSet.start();
+
+    }
+
+
 }
